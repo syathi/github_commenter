@@ -1,22 +1,34 @@
-require 'net/http'
+require 'graphql/client'
+require 'graphql/client/http'
 require 'uri'
 require 'json'
 #GitHub GraphQL apiのサンプルリクエスト 
+module GitHub_API  
+		HTTP = GraphQL::Client::HTTP.new("https://api.github.com/graphql") do
+			def headers(context)
+				{
+					"Authorization" => "bearer #{ENV['GITHUB_API_TOKEN']}"
+				}
+			end
+		end
+    Schema = GraphQL::Client.load_schema(HTTP)
+    Client = GraphQL::Client.new(schema: Schema, execute: HTTP)
+end
+
 module Request_api
 	extend ActiveSupport::Concern
+	include GitHub_API
 	included do 
+		Query = GitHub_API::Client.parse <<-'GraphQL'
+			query { 
+				search(query: "GraphQL", type: REPOSITORY) {
+					 repositoryCount 
+			  }
+			}
+		GraphQL
 		def request_sample
-			user = "xxx"
-			pass = "xxx"
-			url = URI.parse("https://api.github.com/graphql")
-			req = Net::HTTP::Post.new(url.path)
-			req.basic_auth user, pass
-			query = JSON.generate({"query": "query { search(query: \"GraphQL\", type: REPOSITORY) { repositoryCount } }"})
-			req.set_form_data({"query": JSON.generate({"query": "query { search(query: \"GraphQL\", type: REPOSITORY) { repositoryCount } }"})}, ";")
-			http = Net::HTTP.new(url.host, url.port)
-			http.use_ssl = true
-			res = http.start {|http| http.request(req)} 
-			res.body
+			res = GitHub_API::Client.query(Query)
+			query_result = "repository_count: #{res.data.search.repository_count}"
 		end
 	end
 end
