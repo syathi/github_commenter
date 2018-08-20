@@ -3,9 +3,9 @@ require 'graphql/client/http'
 require 'uri'
 require 'json'
 require 'github_api'
-require 'api_query'
+# require 'api_query'
 include GitHub_API
-include Api_Query
+# include Api_Query
 
 #GitHub GraphQL apiのサンプルリクエスト 
 #TODO: スキーマの読み込みはダンプファイルとかを使ってパフォーマンス改善する
