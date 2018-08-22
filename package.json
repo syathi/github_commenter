@@ -3,7 +3,7 @@
   "private": true,
   "scripts": { 
     "build": "webpack-cli --entry ./front/application.js",
-    "watch": "webpack -w"
+    "watch": "webpack --entry ./front/application.js -w"
   },
   "dependencies": {
     "react": "^16.4.2",

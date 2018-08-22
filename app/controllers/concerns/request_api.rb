@@ -14,8 +14,7 @@ module Request_api
   included do 
     Query = GitHub_API::Get_repository_count
     def request_sample
-      res = GitHub_API::Client.query(Query)
-      query_result = "repository_count: #{res.data.search.repository_count}"
+      GitHub_API::Client.query(Query)
     end
   end
 end

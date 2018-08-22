@@ -4,16 +4,22 @@ import { render } from "react-dom";
 class App extends React.Component {
   render() {
     return (
-      <button 
-        onClick={this.requestSample}>
-        りろーど
-      </button>
+      <div className="wrapper">
+        <button 
+          onClick={this.requestSample}>
+          りろーど
+        </button>
+      </div>
     );
   }
 
   requestSample(){
-    console.log("reload"); 
+    return fetch("http://localhost:3000/top_page/repository_count")
+    .then( (response) => {
+      response.json().then( (resolve) => {
+        console.log(resolve);
+      });
+    });
   }
 }
 render(<App/>, document.getElementById("app"));
-console.log("hello");
