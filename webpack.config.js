@@ -1,4 +1,5 @@
 module.exports = {
+  entry: "./front/application.tsx",//エントリーポイント
   mode: "development", //ソースマップを有効化
   output: {
     path: `${__dirname}/app/assets/javascripts/`,
@@ -7,11 +8,11 @@ module.exports = {
   module: {
     rules: [
       {
-        //jsxも解釈する
-        test: /\.(js|jsx)$/,
+        //tsxも解釈する.一応、jsxも残しておく
+        test: /\.(js|jsx|tsx)$/,
         use: [
           {
-            loader: "babel-loader",//babelを利用する
+            loader: "ts-loader",//tsを利用する
             options: {
               //env指定でES5に変換
               //modules:falseでimport文をcomonJSに変換しない
@@ -26,6 +27,6 @@ module.exports = {
   },
   //拡張子を省いたimport先モジュールのファイルを解決
   resolve: {
-    extensions:[".js", ".jsx"]
+    extensions:[".js", ".jsx", ".ts", "tsx", ".json"]
   }
 };

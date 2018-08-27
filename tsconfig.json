@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es5",
+    "sourceMap": true,
+    "types" : ["node"],
+    "outDir": "./app/assets/javascripts/",
+    "jsx": "react",
+    "noUnusedLocals": true
+  },
+  "include":[
+    "./front/**/*"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
