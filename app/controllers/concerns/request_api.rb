@@ -12,9 +12,13 @@ include GitHub_API
 module Request_api
   extend ActiveSupport::Concern
   included do 
-    Query = GitHub_API::Get_repository_count
     def request_sample
-      GitHub_API::Client.query(Query)
+      GitHub_API::Client.query(GitHub_API::Get_repository_count)
+    end
+    
+    def get_repositories(name, owner)
+      GitHub_API::Client.query(GitHub_API::Get_repositories,
+                               variables: {name: name, owner: owner})
     end
   end
 end

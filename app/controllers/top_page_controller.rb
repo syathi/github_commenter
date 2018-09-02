@@ -8,7 +8,11 @@ class TopPageController < ApplicationController
   #api sample. そのうちGraphQLで返すようにする
   def repository_count
     res =  Request_api::request_sample.data
-    puts res
+    render :json => res 
+  end
+
+  def get_repositories
+    res = Request_api::get_repositories("secureParrot", "syathi").data
     render :json => res 
   end
 
