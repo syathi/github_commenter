@@ -1,5 +1,4 @@
 module.exports = {
-  entry: "./front/application.tsx",//エントリーポイント
   mode: "development", //ソースマップを有効化
   output: {
     path: `${__dirname}/app/assets/javascripts/`,
@@ -9,13 +8,13 @@ module.exports = {
     rules: [
       {
         //tsxも解釈する.一応、jsxも残しておく
-        test: /\.(js|jsx|tsx)$/,
+        test: /\.(js|jsx|tsx|ts)$/,
         use: [
           {
-            loader: "ts-loader",//tsを利用する
+            loader: "awesome-typescript-loader", 
             options: {
               //env指定でES5に変換
-              //modules:falseでimport文をcomonJSに変換しない
+              //modules:falseでimport文をcommonJSに変換しない
               //reactをつけてJSXを解釈させる
               presets: [["env", {"modules": false}], "react"]
             }
