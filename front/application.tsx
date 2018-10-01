@@ -5,14 +5,19 @@ interface IndexProps {}
 
 interface IndexState {
   repositoryCount: number;
-  
+  nameWithOwner: string;
+  description: string;
+  url: string;
 }
 
 class App extends React.Component<IndexProps, IndexState> {
   constructor(props: IndexProps){
     super(props);
     this.state = {
-      repositoryCount: 0
+      repositoryCount: 0,
+      nameWithOwner: "",
+      description: "",
+      url:""
     }
   }
 
@@ -26,8 +31,32 @@ class App extends React.Component<IndexProps, IndexState> {
         <div className="repository-count">
           repository count: {this.state.repositoryCount}
         </div>
+        <button
+          onClick={() => this.getRepositories()}>
+          けんさく
+        </button>
+        <div className="get-repositories">
+          repository:
+           {this.state.nameWithOwner}
+           {this.state.description}
+           {this.state.url}
+        </div>
       </div>
     );
+  }
+
+  getRepositories(){
+    return fetch("http://localhost:3000/top_page/get_repositories")
+    .then( (response) => {
+      response.json().then( (resolve) => {
+        console.log(resolve.data.repository);
+        this.setState({
+          nameWithOwner: resolve.data.repository.nameWithOwner,
+          description:   resolve.data.repository.description,
+          url:           resolve.data.repository.url
+        });
+      });
+    });
   }
 
   requestSample(){
