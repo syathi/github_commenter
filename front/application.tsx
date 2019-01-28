@@ -8,6 +8,9 @@ interface IndexState {
   nameWithOwner: string;
   description: string;
   url: string;
+  name: string;
+  owner: string;
+  directory: Array<String>;
 }
 
 class App extends React.Component<IndexProps, IndexState> {
@@ -17,8 +20,14 @@ class App extends React.Component<IndexProps, IndexState> {
       repositoryCount: 0,
       nameWithOwner: "",
       description: "",
-      url:""
-    }
+      url:"",
+      name: "",
+      owner: "",
+      directory: []
+    };
+
+    this.handleNameChange = this.handleNameChange.bind(this);
+    this.handleOwnerChange= this.handleOwnerChange.bind(this);
   }
 
   render() {
@@ -31,32 +40,72 @@ class App extends React.Component<IndexProps, IndexState> {
         <div className="repository-count">
           repository count: {this.state.repositoryCount}
         </div>
-        <button
-          onClick={() => this.getRepositories()}>
-          けんさく
-        </button>
+        <div id="searchForm">
+          <input type="text" value={this.state.name} onChange={this.handleNameChange} />
+          <input type="text" value={this.state.owner} onChange={this.handleOwnerChange} />
+          <button
+            onClick={() => this.getRepositories()}>
+            けんさく
+          </button>
+        </div>
         <div className="get-repositories">
           repository:
-           {this.state.nameWithOwner}
-           {this.state.description}
-           {this.state.url}
+           <div><button onClick={this.getRepositoryFiles}>{this.state.nameWithOwner}</button></div>
+           <div id="description">{this.state.description}</div>
+           <a href={this.state.url} id="url">{this.state.url}</a>
         </div>
       </div>
     );
   }
 
+  handleNameChange(event){
+    this.setState({name: event.target.value});
+  }
+
+  handleOwnerChange(event){
+    this.setState({owner: event.target.value});
+  }
+
   getRepositories(){
-    return fetch("http://localhost:3000/top_page/get_repositories")
+    const query: string = "name=" + this.state.name + "&owner=" + this.state.owner; 
+    return fetch("http://localhost:3000/top_page/get_repositories?" + query)
     .then( (response) => {
       response.json().then( (resolve) => {
-        console.log(resolve.data.repository);
-        this.setState({
-          nameWithOwner: resolve.data.repository.nameWithOwner,
-          description:   resolve.data.repository.description,
-          url:           resolve.data.repository.url
-        });
+        if (resolve.data.repository !== null) {
+          this.setState({
+            nameWithOwner: resolve.data.repository.nameWithOwner,
+            description:   resolve.data.repository.description,
+            url:           resolve.data.repository.url
+          });
+        } else {
+          this.setState({
+            nameWithOwner: "なにもないよ",
+            description: "",
+            url: ""
+          });
+        }
       });
     });
+  }
+
+  getRepositoryFiles(){
+    const query: string = "hoge";
+    return fetch("http://localhost:3000/top_page/get_repository_files?directory=" + query)
+    .then( (response) => {
+      console.log(response);
+      response.json().then( (resolve) => {
+        if (resolve.data.directory !== null) {
+          this.setState({
+            directory: [resolve.data.directory]
+          })
+        } else {
+          this.setState({
+            directory: ["なにもないよ"]
+          })
+        }
+      });
+      console.log("hogehoeghugahgua");
+    })
   }
 
   requestSample(){

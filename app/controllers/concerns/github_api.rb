@@ -21,7 +21,8 @@ module GitHub_API
 			}
 		}
   GraphQL
-
+  
+  # リポジトリ検索
   Get_repositories = GitHub_API::Client.parse <<-'GraphQL'
     query($name: String!, $owner: String!) {
       repository(name: $name, owner: $owner){
