@@ -2,7 +2,7 @@ include Request_api
 
 class TopPageController < ApplicationController
   before_action :search, only: [:get_repositories]
-  before_action :get_repository_files, only: [:get_repository_files]
+  before_action :repository_files, only: [:get_repository_files]
 
   def index
     res = Request_api::request_sample
@@ -26,13 +26,12 @@ class TopPageController < ApplicationController
   def get_repository_files #ダミーを返す
     # エラー処理
     if (@files.nil?) then
-      render :json => { :error => "input files"}
+      render :json => { error: "input files"}
       return
     end
     res = {
-      :directory => ["hoge", "huga", "piyo", "puyo"]
+      directory: ["hoge", "huga", "piyo", "puyo"]
     }
-    puts res
     render :json => res
   end
   
@@ -41,7 +40,7 @@ class TopPageController < ApplicationController
       @repository_query = [params[:name], params[:owner]]
     end 
 
-    def ripository_files
+    def repository_files
       @files = [params[:directory]]
     end
 end

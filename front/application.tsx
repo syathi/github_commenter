@@ -50,7 +50,7 @@ class App extends React.Component<IndexProps, IndexState> {
         </div>
         <div className="get-repositories">
           repository:
-           <div><button onClick={this.getRepositoryFiles}>{this.state.nameWithOwner}</button></div>
+           <div><button onClick={() => this.getRepositoryFiles()}>{this.state.nameWithOwner}</button></div>
            <div id="description">{this.state.description}</div>
            <a href={this.state.url} id="url">{this.state.url}</a>
         </div>
@@ -92,19 +92,19 @@ class App extends React.Component<IndexProps, IndexState> {
     const query: string = "hoge";
     return fetch("http://localhost:3000/top_page/get_repository_files?directory=" + query)
     .then( (response) => {
-      console.log(response);
       response.json().then( (resolve) => {
-        if (resolve.data.directory !== null) {
+        if (resolve.directory !== null) {
           this.setState({
-            directory: [resolve.data.directory]
-          })
+            directory: [resolve.directory]
+          });
+          console.log(resolve.directory);
         } else {
           this.setState({
             directory: ["なにもないよ"]
-          })
+          });
+          console.log("なにもないよ");
         }
       });
-      console.log("hogehoeghugahgua");
     })
   }
 
